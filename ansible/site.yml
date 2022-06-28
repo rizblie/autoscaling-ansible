@@ -1,0 +1,67 @@
+- hosts: localhost
+
+  vars:
+
+    # schedule is fed directly to cron
+    schedule: '*/15 * * * *'
+
+    # User to run ansible-pull as from cron
+    cron_user: root
+
+    # The following vars should be supplied on the command line as --extra-args
+    # - repo_uri: the repo where the playbook is stored
+    # - playbook: the filename for the playbook
+    # - logfile
+
+  tasks:
+
+    - name: php74
+      become: yes
+      shell: amazon-linux-extras enable php7.4
+
+    - name: nginx
+      become: yes
+      shell: amazon-linux-extras enable nginx1
+
+    - name: Install yum packages
+      become: yes
+      yum:
+        name:
+         - php-common
+         - php-fpm
+         - php-gd
+         - php-intl
+         - php-json
+         - php-mbstring
+         - php-mysqlnd
+         - php-xml
+        update_cache: yes
+
+    - name: Update php-fpm port
+      become: yes
+      ini_file:
+        path: /etc/php-fpm.d/www.conf
+        option: listen
+        value: 9000
+        section: www
+        backup: yes
+
+    # Set up crontab
+    
+    - name: Create file for crontab entry
+      become: yes
+      file:
+        path: /etc/cron.d/ansible-pull
+        state: touch
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: Insert crontab entry
+      become: yes
+      blockinfile:
+        path: /etc/cron.d/ansible-pull
+        block: |
+          PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+          # Cron job to git clone/pull a repo and then run locally
+          {{schedule}} {{cron_user}} ansible-pull -U {{repo_uri}} -e "repo_uri={{ repo_uri }} playbook={{playbook}} logfile={{logfile}}" {{playbook}} >> {{logfile}} 2>&1
