@@ -3,6 +3,9 @@
 This repo contains samples that demonstrate various options for using Ansible
 in conjunction with EC2 AutoScaling groups.
 
+- Option 1: Run Ansible using AWS SSM State Manager
+- Option 2: Set up EC2 instances to use ansible-pull
+
 ## Run Ansible using AWS SSM State Manager
 
 1. Create an S3 bucket to hold the Ansible configuration 
