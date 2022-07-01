@@ -8,6 +8,21 @@ in conjunction with EC2 AutoScaling groups.
 
 ## Run Ansible using AWS SSM State Manager
 
+This sample makes of AWS SSM State Manager and AWS SSM agent to ensure that all instances have the correct, latest Ansible configuration. This approach has the following benefits:
+- Configuation can be associated to a target group based on presence of a specific tag.
+- It can be applied to pre-existing instances (as long as the instances are running ssm agent)
+- Any new instances that are created in an ASG are automatically detected and configured.
+- SSM State Manager will automatically install Ansible on new instances before attempting to use Ansible to configure them.
+- Changes to the config can be pushed to the entire instance target group immediately.
+- You can control the rate at which config updates are rolled out.
+- Optionally, you can set up a cron schedule to verify that all instances are compliant with latest config, and to apply a config update if not.
+- You can control the error threshold above which an execution should stop.
+- Execution history and logs are recorded, with logs stored on S3.
+
+For more info see [AWS documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state-manager-ansible.html).
+
+### Setup instructions
+
 1. Create an S3 bucket to hold the Ansible configuration 
 2. Create a folder `ansible/` in the bucket
 3. Upload the file `ssm-state-manager/ssm-playbook.yml` to the `ansible/` folder in the bucket.
