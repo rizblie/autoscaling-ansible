@@ -6,9 +6,9 @@ in conjunction with EC2 AutoScaling groups.
 ## Run Ansible using AWS SSM State Manager
 
 1. Create an S3 bucket to hold the Ansible configuration 
-2. Create a folfer `ansible/` in the bucket
+2. Create a folder `ansible/` in the bucket
 3. Upload the file `ssm-state-manager/ssm-playbook.yml` to the `ansible/` folder in the bucket.
-4. Run the CloudFormation template `ssm-state-manager/`. You can accept the default values where provided.
+4. Run the CloudFormation template `ssm-state-manager/Cfn-SSM-Ansible.yaml`. You can accept the default values where provided.
    - Specify your bucket name for both the Ansible bucket and the Ansible Logs bucket.
    - Specify an `EnvironmentName` e.g. `ssm-poc`. This is used to tag
     resources and generate resource names that are specific to a
