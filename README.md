@@ -20,7 +20,7 @@ This sample makes of AWS SSM State Manager and AWS SSM agent to ensure that all 
 - Execution history and logs are recorded, with logs stored on S3.
 
 For more info see:
--[AWS documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state-manager-ansible.html)
+- [AWS documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state-manager-ansible.html)
 - [blog post](https://aws.amazon.com/blogs/mt/keeping-ansible-effortless-with-aws-systems-manager/)
 
 ### Setup instructions
