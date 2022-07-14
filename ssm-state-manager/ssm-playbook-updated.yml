@@ -1,0 +1,34 @@
+- hosts: all
+
+  tasks:
+
+    - name: php74
+      become: yes
+      shell: amazon-linux-extras enable php7.4
+
+    - name: nginx
+      become: yes
+      shell: amazon-linux-extras enable nginx1
+
+    - name: Install yum packages
+      become: yes
+      yum:
+        name:
+         - php-common
+         - php-fpm
+         - php-gd
+         - php-intl
+         - php-json
+         - php-mbstring
+         - php-mysqlnd
+         - php-xml
+        update_cache: yes
+
+    - name: Update php-fpm port
+      become: yes
+      ini_file:
+        path: /etc/php-fpm.d/www.conf
+        option: listen
+        value: 9999
+        section: www
+        backup: yes
